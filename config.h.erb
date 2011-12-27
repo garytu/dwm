@@ -51,6 +51,7 @@ static const Bool resizehints = True; /* True means respect size hints in tiled 
   tile:        "[]=", # "[]=",
   nil =>       "><>", # "><>",
   monocle:     "[M]", # "[M]",
+  gaplessgrid: "[+]",
   bstack:      "TTT",
   bstackhoriz: "===",
 } %>
@@ -109,6 +110,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[<%= layouts.keys.index :tile %>]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[<%= layouts.keys.index nil %>]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[<%= layouts.keys.index :monocle %>]} },
+	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[<%= layouts.keys.index :gaplessgrid %>]} },
 	{ MODKEY,                       XK_bracketleft,setlayout,  {.v = &layouts[<%= layouts.keys.index :bstack %>]} },
 	{ MODKEY,                       XK_bracketright,setlayout, {.v = &layouts[<%= layouts.keys.index :bstackhoriz %>]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
