@@ -51,6 +51,8 @@ static const Bool resizehints = True; /* True means respect size hints in tiled 
   tile:        "[]=", # "[]=",
   nil =>       "><>", # "><>",
   monocle:     "[M]", # "[M]",
+  bstack:      "TTT",
+  bstackhoriz: "===",
 } %>
 static const Layout layouts[] = {<%= layouts.map {|func, icon| "{#{icon.inspect}, #{func || :NULL}}" }.join(',') %>};
 
@@ -107,6 +109,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[<%= layouts.keys.index :tile %>]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[<%= layouts.keys.index nil %>]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[<%= layouts.keys.index :monocle %>]} },
+	{ MODKEY,                       XK_bracketleft,setlayout,  {.v = &layouts[<%= layouts.keys.index :bstack %>]} },
+	{ MODKEY,                       XK_bracketright,setlayout, {.v = &layouts[<%= layouts.keys.index :bstackhoriz %>]} },
+	{ MODKEY,                       XK_space,  setlayout,      {0} },
+	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
