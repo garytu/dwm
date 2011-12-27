@@ -54,6 +54,8 @@ static const Bool resizehints = True; /* True means respect size hints in tiled 
   gaplessgrid: "[+]",
   bstack:      "TTT",
   bstackhoriz: "===",
+ 	spiral:      "[@]",
+ 	dwindle:     "[\\]",
 } %>
 static const Layout layouts[] = {<%= layouts.map {|func, icon| "{#{icon.inspect}, #{func || :NULL}}" }.join(',') %>};
 
@@ -113,6 +115,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[<%= layouts.keys.index :gaplessgrid %>]} },
 	{ MODKEY,                       XK_bracketleft,setlayout,  {.v = &layouts[<%= layouts.keys.index :bstack %>]} },
 	{ MODKEY,                       XK_bracketright,setlayout, {.v = &layouts[<%= layouts.keys.index :bstackhoriz %>]} },
+	{ MODKEY,                       XK_minus,  setlayout,      {.v = &layouts[<%= layouts.keys.index :spiral %>]} },
+	{ MODKEY,                       XK_equal,  setlayout,      {.v = &layouts[<%= layouts.keys.index :dwindle %>]} },
+	{ MODKEY,                       XK_space,  setlayout,      {0} },
+	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
