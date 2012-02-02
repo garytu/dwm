@@ -31,13 +31,14 @@ tags.values.map(&:inspect).join(',') %>};
    
 static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
-  { NULL,          "DIALOG",   NULL,             0,                                   True,        -1 },
-  { "XFontSel",    NULL,       NULL,             0,                                   True,        -1 },
-	{ "Xmessage",    NULL,       NULL,             0,                                   True,        -1 },
+  { NULL,          "DIALOG",   NULL,             ~0,                                  True,        -1 },
+  { "trayer",      NULL,       NULL,             ~0,                                  True,        -1 },
+  { "XFontSel",    NULL,       NULL,             ~0,                                  True,        -1 },
+  { "Xmessage",    NULL,       NULL,             ~0,                                  True,        -1 },
   { "Lotus Notes", NULL,       NULL,             1 << <%= tags.keys.index :notes %>,  False,      -1 },
   { "Lotus Notes", NULL,       " [started: ",    1 << <%= tags.keys.index :chat %>,   True,       -1 },
-	{ "Pidgin",      "Pidgin",   NULL,             1 << <%= tags.keys.index :chat %>,   True,       -1 },
-	{ "Pidgin",      "Pidgin",   "Buddy List",     1 << <%= tags.keys.index :chat %>,   True,       -1 },
+  { "Pidgin",      "Pidgin",   NULL,             1 << <%= tags.keys.index :chat %>,   True,       -1 },
+  { "Pidgin",      "Pidgin",   "Buddy List",     1 << <%= tags.keys.index :chat %>,   True,       -1 },
   { "Wine",        NULL,       "System Tray",    1 << <%= tags.keys.index :other %>,  True,       -1 },
   { "Wine",        "SimpLite", "Simp",           1 << <%= tags.keys.index :other %>,  True,       -1 },
 };
