@@ -30,6 +30,10 @@ static const char *tags[] = {<%=
 tags.values.map(&:inspect).join(',') %>};
    
 static const Rule rules[] = {
+	/* xprop(1):
+	 *	WM_CLASS(STRING) = instance, class
+	 *	WM_NAME(STRING) = title
+	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
   { NULL,          "DIALOG",   NULL,             0,                                   True,        -1 },
   { "XFontSel",    NULL,       NULL,             0,                                   True,        -1 },
