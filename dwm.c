@@ -416,9 +416,10 @@ arrange(Monitor *m) {
 		showhide(m->stack);
 	else for(m = mons; m; m = m->next)
 		showhide(m->stack);
-	if(m)
+	if(m) {
 		arrangemon(m);
-	else for(m = mons; m; m = m->next)
+		restack(m);
+	} else for(m = mons; m; m = m->next)
 		arrangemon(m);
 }
 
@@ -427,7 +428,6 @@ arrangemon(Monitor *m) {
 	strncpy(m->ltsymbol, m->lt[m->sellt]->symbol, sizeof m->ltsymbol);
 	if(m->lt[m->sellt]->arrange)
 		m->lt[m->sellt]->arrange(m);
-	restack(m);
 }
 
 void
@@ -1269,6 +1269,7 @@ motionnotify(XEvent *e) {
 	if(ev->window != root)
 		return;
 	if((m = recttomon(ev->x_root, ev->y_root, 1, 1)) != mon && mon) {
+		unfocus(selmon->sel, True);
 		selmon = m;
 		focus(NULL);
 	}
@@ -1317,8 +1318,11 @@ movemouse(const Arg *arg) {
 				&& (abs(nx - c->x) > snap || abs(ny - c->y) > snap))
 					togglefloating(NULL);
 			}
-			if(!selmon->lt[selmon->sellt]->arrange || c->isfloating)
+			if(!selmon->lt[selmon->sellt]->arrange || c->isfloating) {
+				if(c->isfullscreen)
+					setfullscreen(c, False);
 				resize(c, nx, ny, c->w, c->h, True);
+			}
 			break;
 		}
 	} while(ev.type != ButtonRelease);
@@ -1459,8 +1463,11 @@ resizemouse(const Arg *arg) {
 				&& (abs(nw - c->w) > snap || abs(nh - c->h) > snap))
 					togglefloating(NULL);
 			}
-			if(!selmon->lt[selmon->sellt]->arrange || c->isfloating)
+			if(!selmon->lt[selmon->sellt]->arrange || c->isfloating) {
+				if(c->isfullscreen)
+					setfullscreen(c, False);
 				resize(c, c->x, c->y, nw, nh, True);
+			}
 			break;
 		}
 	} while(ev.type != ButtonRelease);
@@ -1940,6 +1947,8 @@ togglefloating(const Arg *arg) {
 	if(selmon->sel->isfloating)
 		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
 		       selmon->sel->w, selmon->sel->h, False);
+	else if(selmon->sel->isfullscreen)
+		setfullscreen(selmon->sel, False);
 	arrange(selmon);
 }
 
@@ -2039,6 +2048,8 @@ updatebars(void) {
 		.event_mask = ButtonPressMask|ExposureMask
 	};
 	for(m = mons; m; m = m->next) {
+		if (m->barwin)
+			continue;
 		m->barwin = XCreateWindow(dpy, root, m->wx, m->by, m->ww, bh, 0, DefaultDepth(dpy, screen),
 		                          CopyFromParent, DefaultVisual(dpy, screen),
 		                          CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
@@ -2229,7 +2240,6 @@ updatewindowtype(Client *c) {
 
 	if(state == netatom[NetWMFullscreen])
 		setfullscreen(c, True);
-
 	if(wtype == netatom[NetWMWindowTypeDialog])
 		c->isfloating = True;
 }
@@ -2380,7 +2390,7 @@ zoom(const Arg *arg) {
 int
 main(int argc, char *argv[]) {
 	if(argc == 2 && !strcmp("-v", argv[1]))
-		die("dwm-"VERSION", © 2006-2011 dwm engineers, see LICENSE for details\n");
+		die("dwm-"VERSION", © 2006-2012 dwm engineers, see LICENSE for details\n");
 	else if(argc != 1)
 		die("usage: dwm [-v]\n");
 	if(!setlocale(LC_CTYPE, "") || !XSupportsLocale())
